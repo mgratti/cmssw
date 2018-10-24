@@ -144,6 +144,7 @@ void
 VIDNestedWPBitmapProducer<T>::initNCuts(unsigned int n){
   nCuts = n;
   nBits = ceil(log2(nWP+1));
+  std::cout << "nCuts=" << nCuts << "  nBits=" << nBits << std::endl;
   if (nBits*nCuts>sizeof(int)*8) throw cms::Exception("Configuration","Integer cannot contain the compressed VID bitmap information");
   res_.resize(nCuts,0);
   isInit_ = true;
