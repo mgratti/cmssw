@@ -239,6 +239,11 @@ void pat::PATIsolatedTrackProducer::produce(edm::Event& iEvent, const edm::Event
         bool isInPackedCands = (pcref.isNonnull() && pcref.id()==pc_h.id() && pfCand.charge()!=0);
         bool isInLostTracks  = (ltref.isNonnull() && ltref.id()==lt_h.id());
 
+        // *****************
+        // MG - check
+        if(!isInPackedCands) continue;
+        // *****************
+
         LorentzVector p4;
         pat::PackedCandidateRef refToCand;
         int pdgId, charge, fromPV;
