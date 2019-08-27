@@ -6,6 +6,15 @@
 #include "CommonTools/Utils/interface/DynArray.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 
+#include "Calibration/Tools/interface/EcalRingCalibrationTools.h"
+// Includes need to read from geometry
+#include "Geometry/CaloGeometry/interface/CaloGeometry.h"
+#include "Geometry/CaloGeometry/interface/CaloSubdetectorGeometry.h"
+#include "Geometry/CaloGeometry/interface/CaloCellGeometry.h"
+
+//#include "DataFormats/EcalDetId/interface/EBDetId.h"
+//#include "DataFormats/EcalDetId/interface/EEDetId.h"
+
 namespace {
   const reco::PFRecHit::Neighbours  _noNeighbours(nullptr,0);
 }
@@ -36,13 +45,13 @@ LocalMaximumSeedFinder(const edm::ParameterSet& conf) :
     std::vector<double> thresh_pT ;
     std::vector<double> thresh_pT2;
 
-    if (det==std::string("HCAL_BARREL1") || det==std::string("HCAL_ENDCAP")) {
+    if (det==std::string("HCAL_BARREL1") || det==std::string("HCAL_ENDCAP") || det==std::string("ECAL_BARREL")) { // || det==std::string("ECAL_ENDCAP")) {
       depths = pset.getParameter<std::vector<int> >("depths");
       thresh_E = pset.getParameter<std::vector<double> >("seedingThreshold");
       thresh_pT = pset.getParameter<std::vector<double> >("seedingThresholdPt");
       if(thresh_E.size()!=depths.size() || thresh_pT.size()!=depths.size()) {
 	throw cms::Exception("InvalidGatheringThreshold")
-	  << "gatheringThresholds mismatch with the numbers of depths";
+	  << "seedingThresholds mismatch with the numbers of depths";
       }
     } else {
       depths.push_back(0);
@@ -71,6 +80,7 @@ void LocalMaximumSeedFinder::
 findSeeds( const edm::Handle<reco::PFRecHitCollection>& input,
 	   const std::vector<bool>& mask,
 	   std::vector<bool>& seedable ) {
+           //CaloGeometry &geometry ) {
 
   auto nhits = input->size();
   initDynArray(bool,nhits,usable,true);
@@ -85,9 +95,34 @@ findSeeds( const edm::Handle<reco::PFRecHitCollection>& input,
     auto const & maybeseed = (*input)[i];
     energies[i]=maybeseed.energy();
     int seedlayer = (int)maybeseed.layer();
+    // M-G
+    //if ( seedlayer == PFLayer::ECAL_ENDCAP || seedlayer == PFLayer::ECAL_BARREL ) {
+    //  std::cout << "DEBUG seed layer=" << seedlayer << " seed depth=" << maybeseed.depth() << std::endl;
+    //} 
     if( seedlayer == PFLayer::HCAL_BARREL2 &&
         std::abs(maybeseed.positionREP().eta()) > 0.34 ) {
       seedlayer = 19;
+    }
+
+    int seedring = 0; // 
+    if (seedlayer == PFLayer::ECAL_BARREL) { // || seedlayer == PFLayer::ECAL_ENDCAP){
+
+      //if (seedlayer == PFLayer::ECAL_ENDCAP) { // and the geometry has not been set yet, you cannot seriously repeat this for each cluster in the event...
+
+        //edm::ESHandle<CaloGeometry> pG;
+        //iSetup.get<CaloGeometryRecord>().get(pG);
+        //CaloSubdetectorGeometry const* endcapGeometry = pG->getSubdetectorGeometry(DetId::Ecal, EcalEndcap);
+        //endcapGeometrySet_ = false;
+        //if (endcapGeometry) {
+        //EcalRingCalibrationTools::setCaloGeometry(&(*geometry));
+          //endcapGeometrySet_ = true;
+        //}
+      //}
+      // identify in which ring the seed is
+      // indexing of rings must correspond to indexing of depths given as parameters
+      // ===========>  must have initialized geometry for end-caps before using, not needed for EB
+      seedring = EcalRingCalibrationTools::getRingIndex(maybeseed.detId());
+      //std::cout << "DEBUG seedring=" << seedring << std::endl;
     }
     auto const & thresholds = _thresholds[seedlayer+layerOffset];
 
@@ -100,7 +135,9 @@ findSeeds( const edm::Handle<reco::PFRecHitCollection>& input,
       int depth=std::get<0>(thresholds)[j];
       if( ( seedlayer == PFLayer::HCAL_BARREL1 && maybeseed.depth()== depth)
 	  || ( seedlayer == PFLayer::HCAL_ENDCAP && maybeseed.depth()== depth)
-	  || ( seedlayer != PFLayer::HCAL_BARREL1 && seedlayer != PFLayer::HCAL_ENDCAP)
+          || ( seedlayer == PFLayer::ECAL_BARREL && seedring==depth) // for ECAL_EB depth is a ring 
+         // || ( seedlayer == PFLayer::ECAL_ENDCAP && seedring==depth) // and also for ECAL_EE
+	  || ( seedlayer != PFLayer::HCAL_BARREL1 && seedlayer != PFLayer::HCAL_ENDCAP && seedlayer != PFLayer::ECAL_BARREL)
 	  ) { thresholdE=std::get<1>(thresholds)[j]; thresholdPT2=std::get<2>(thresholds)[j]; }
 
     }

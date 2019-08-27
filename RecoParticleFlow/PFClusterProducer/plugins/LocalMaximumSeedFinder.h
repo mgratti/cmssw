@@ -2,6 +2,7 @@
 #define __LocalMaximumSeedFinder_H__
 
 #include "RecoParticleFlow/PFClusterProducer/interface/SeedFinderBase.h"
+#include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 
 #include <unordered_map>
 #include <tuple>
@@ -14,7 +15,8 @@ class LocalMaximumSeedFinder final : public SeedFinderBase {
 
   void findSeeds( const edm::Handle<reco::PFRecHitCollection>& input,
 		  const std::vector<bool>& mask,
-		  std::vector<bool>& seedable ) override;
+		  std::vector<bool>& seedable) override;
+                  //CaloGeometry &geometry ) override;
 
  private:  
   const int _nNeighbours;

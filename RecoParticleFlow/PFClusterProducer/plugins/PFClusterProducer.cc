@@ -1,4 +1,5 @@
 #include "PFClusterProducer.h"
+#include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 
 #ifdef PFLOW_DEBUG
 #define LOGVERB(x) edm::LogVerbatim(x)
@@ -25,6 +26,8 @@ PFClusterProducer::PFClusterProducer(const edm::ParameterSet& conf) :
     _cleaners.emplace_back(RecHitTopologicalCleanerFactory::get()->create(cleanerName,conf));
   }
   edm::ConsumesCollector sumes = consumesCollector();
+
+  // one other possible way would be to setup a rechitcleaner for seeds and one for gathering thresholds...
 
   // setup seed finding
   const edm::ParameterSet& sfConf = 
@@ -84,9 +87,23 @@ void PFClusterProducer::produce(edm::Event& e, const edm::EventSetup& es) {
     cleaner->clean(rechits, mask);
   }
 
+  // let's setup the geometry here 
+  //edm::ESHandle<CaloGeometry> pG;
+  //es.get<CaloGeometryRecord>().get(pG);
+  //CaloSubdetectorGeometry const* endcapGeometry = pG->getSubdetectorGeometry(DetId::Ecal, EcalEndcap);
+  //edm::ESHandle<CaloGeometry> pGeometry;
+  //es.get<CaloGeometryRecord>().get(pGeometry);
+  //const CaloGeometry geometry = pGeometry.product();
+  //endcapGeometrySet_ = false;
+  //if (endcapGeometry) {
+  //  EcalRingCalibrationTools::setCaloGeometry(&(*pG));
+    //endcapGeometrySet_ = true;
+  //}
 
+  // in another option, I would have the two cleaners with their respective masks 
 
   std::vector<bool> seedable(rechits->size(),false);
+  //_seedFinder->findSeeds(rechits,mask,seedable,geometry);
   _seedFinder->findSeeds(rechits,mask,seedable);
 
 
