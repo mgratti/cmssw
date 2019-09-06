@@ -34,6 +34,12 @@ _spikeAndDoubleSpikeCleaner_ECAL = cms.PSet(
     )
 )
 
+
+# set-up new cleaning - in practice it's eta-dependent seeding thresholds
+_seedCleaner_ECAL = cms.PSet(
+     algoName = cms.string("ECALPFSeedCleaner"),
+)
+
 #seeding
 _localMaxSeeds_ECAL = cms.PSet(
     algoName = cms.string("LocalMaximumSeedFinder"),
@@ -118,7 +124,7 @@ _pfClusterizer_ECAL = cms.PSet(
 particleFlowClusterECALUncorrected = cms.EDProducer(
     "PFClusterProducer",
     recHitsSource = cms.InputTag("particleFlowRecHitECAL"),
-    recHitCleaners = cms.VPSet(),
+    recHitCleaners = cms.VPSet(_seedCleaner_ECAL), 
     seedFinder = _localMaxSeeds_ECAL,
     initialClusteringStep = _topoClusterizer_ECAL,
     pfClusterBuilder = _pfClusterizer_ECAL,
