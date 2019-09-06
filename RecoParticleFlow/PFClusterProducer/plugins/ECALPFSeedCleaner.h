@@ -18,11 +18,7 @@ class ECALPFSeedCleaner : public RecHitTopologicalCleanerBase {
   void clean( const edm::Handle<reco::PFRecHitCollection>& input,
 	      std::vector<bool>& mask ) override;
 
-  //const edm::EventSetup* eventSetup_;
-
  private:
-  //const std::unordered_map<std::string,int> _layerMap;
-  //std::unordered_map<int,spike_cleaning> _thresholds;
   edm::ESHandle<EcalPFSeedingThresholds> ths_; 
 };
 
