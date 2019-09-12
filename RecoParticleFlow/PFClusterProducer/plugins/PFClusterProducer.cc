@@ -19,11 +19,11 @@ PFClusterProducer::PFClusterProducer(const edm::ParameterSet& conf) :
   //setup rechit cleaners
   const edm::VParameterSet& cleanerConfs = 
     conf.getParameterSetVector("recHitCleaners");
-  std::cout << "DEBUG PFClusterProducer::PFClusterProducer " << std::endl;
+  //std::cout << "DEBUG PFClusterProducer::PFClusterProducer " << std::endl;
   for( const auto& conf : cleanerConfs ) {
     const std::string& cleanerName = 
       conf.getParameter<std::string>("algoName");
-    std::cout << "DEBUG PFClusterProducer::PFClusterProducer cleanerName= " << cleanerName << std::endl;
+    //std::cout << "DEBUG PFClusterProducer::PFClusterProducer cleanerName= " << cleanerName << std::endl;
     _cleaners.emplace_back(RecHitTopologicalCleanerFactory::get()->create(cleanerName,conf));
   }
   edm::ConsumesCollector sumes = consumesCollector();
