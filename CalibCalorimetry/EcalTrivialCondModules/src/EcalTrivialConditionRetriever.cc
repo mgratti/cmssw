@@ -79,8 +79,8 @@ EcalTrivialConditionRetriever::EcalTrivialConditionRetriever( const edm::Paramet
 
   pfSeedingThresholdsNSigmas_ = ps.getUntrackedParameter<double>("EcalPFSeedingThresholdNSigmas", 1.0 );
   pfSeedingThresholdsNSigmasHEta_ = ps.getUntrackedParameter<double>("EcalPFSeedingThresholdNSigmasHEta", 1.0 );
-  pfSeedingThresholdsEB_ = ps.getUntrackedParameter<double>("EcalPFSeedingThresholdEB", 0.0 );
-  pfSeedingThresholdsEE_ = ps.getUntrackedParameter<double>("EcalPFSeedingThresholdEE", 0.0 );
+  pfSeedingThresholdsEB_ = ps.getUntrackedParameter<double>("EcalPFSeedingThresholdEB", 0.2 ); // 80 -> 200 MeV
+  pfSeedingThresholdsEE_ = ps.getUntrackedParameter<double>("EcalPFSeedingThresholdEE", 0.5 ); // 300 -> 500 MeV
 
   localContCorrParameters_ = ps.getUntrackedParameter< std::vector<double> >("localContCorrParameters", std::vector<double>(0) );
   crackCorrParameters_ = ps.getUntrackedParameter< std::vector<double> >("crackCorrParameters", std::vector<double>(0) );
