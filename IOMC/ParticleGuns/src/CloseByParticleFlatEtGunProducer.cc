@@ -77,10 +77,16 @@ void CloseByParticleFlatEtGunProducer::produce(Event &e, const EventSetup& es)
      int partIdx = CLHEP::RandFlat::shoot(engine, 0, fPartIDs.size());
      particles.push_back(fPartIDs[partIdx]);
      }
+   //in the case of the generation in the endcap (i.e at fixed Z), we want to generate randomly between EEP and EEM
+   double rdm = 1;
+   if(fZMin==fZMax){
+      rdm = (std::rand() & 2) - 1;
+      if(rdm==0) rdm = -1;
+   }
 
    double phi = CLHEP::RandFlat::shoot(engine, fPhiMin, fPhiMax);
    double fR = CLHEP::RandFlat::shoot(engine,fRMin,fRMax);
-   double fZ = CLHEP::RandFlat::shoot(engine,fZMin,fZMax);
+   double fZ = CLHEP::RandFlat::shoot(engine,rdm*fZMin,rdm*fZMax);
    double tmpPhi = phi;
    double tmpR = fR;
 
