@@ -1,0 +1,25 @@
+
+
+
+
+"""
+Alias myB+ B+
+Alias myB- B-
+Alias myD0 D0
+Alias myAntiD0 anti-D0
+ChargeConj myB+ myB-
+ChargeConj myD0 myAntiD0
+
+Decay myB-
+1.0     myD0    mu-    anti-nu_mu    ISGW2;
+Enddecay
+CDecay myB+
+
+Decay myD0
+1.0    K-    pi+    PHSP;
+Enddecay
+CDecay myAntiD0
+
+End
+"""
+

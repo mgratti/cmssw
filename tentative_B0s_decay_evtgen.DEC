@@ -1,0 +1,27 @@
+
+
+
+
+"""
+Alias myBs0 B_s0
+Alias myAntiBs0 anti-B_s0
+Alias myDs- D_s-
+Alias myDs+ D_s+
+
+ChargeConj myBs0 myAntiBs0
+
+Decay myBs0
+XXX    myDs-    mu+     nu_mu    ISGW2; 
+
+
+
+Enddecay
+CDecay myAntiBs0
+
+Decay myDs-
+XXX    K-    K0    YYYYY;
+Enddecay
+CDecay myDs+
+
+End
+"""
