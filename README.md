@@ -25,15 +25,16 @@ export CMSSW_SEARCH_PATH=$CMSSW_BASE/src/GeneratorInterface/EvtGenInterface/data
 ```
 
 ## Cfgs 
-
+```
 BPH-RunIIFall17GS-00087_1_cfg.py  => tau->3mu      with Fall17
 BTV-RunIIFall18GS-00035_1_cfg.py  => W+W-          with Fall18 
 BPH_start_cfg.py                  => mod tau->3mu  with Fall18 
 BPH_mod_cfg.py                    => tentative HNL with Fall18
-
+```
 
 ## Decay files (for reference)
-
+```
 tentative_B_decay_evtgen.DEC     => B+ -> nu  mu+ D0, D0 -> K- pi+
 tentative_B_decay_HNL_evtgen.DEC => B+ -> HNL mu+ D0, D0 -> K- pi+
+```
 
