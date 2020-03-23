@@ -99,6 +99,7 @@ particleFlowClusterHBHE = cms.EDProducer(
            maxIterations = cms.uint32(50),
            excludeOtherSeeds = cms.bool(True),
            minFracTot = cms.double(1e-20), ## numerical stabilization
+           maxSigmaDist = cms.double(10),
            recHitEnergyNorms = cms.VPSet(
             cms.PSet( detector = cms.string("HCAL_BARREL1"),
                       depths = cms.vint32(1, 2, 3, 4),

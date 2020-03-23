@@ -116,6 +116,7 @@ _pfClusterizer_ECAL = cms.PSet(
     maxIterations = cms.uint32(50),
     excludeOtherSeeds = cms.bool(True),
     minFracTot = cms.double(1e-20), ## numerical stabilization
+    maxSigmaDist = cms.double(10),
     recHitEnergyNorms = cms.VPSet(
     cms.PSet( detector = cms.string("ECAL_BARREL"),
               recHitEnergyNorm = cms.double(0.08) # not relevant for ECAL

@@ -70,6 +70,7 @@ _pfClusterizer_HFHAD = cms.PSet(
     maxIterations = cms.uint32(50),
     excludeOtherSeeds = cms.bool(True),
     minFracTot = cms.double(1e-20), ## numerical stabilization
+    maxSigmaDist = cms.double(10),
     recHitEnergyNorms = cms.VPSet(
     cms.PSet( detector = cms.string("HF_HAD"),
               recHitEnergyNorm = cms.double(0.8)

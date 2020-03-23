@@ -64,6 +64,7 @@ _pfClusterizer_HO = cms.PSet(
     maxIterations = cms.uint32(50),
     excludeOtherSeeds = cms.bool(True),
     minFracTot = cms.double(1e-20), ## numerical stabilization
+    maxSigmaDist = cms.double(10),
     recHitEnergyNorms = cms.VPSet(
     cms.PSet( detector = cms.string("HCAL_BARREL2_RING0"),
               recHitEnergyNorm = cms.double(0.5)

@@ -29,6 +29,7 @@ Basic2DGenericPFlowClusterizer(const edm::ParameterSet& conf) :
     _showerSigma2(std::pow(conf.getParameter<double>("showerSigma"),2.0)),
     _excludeOtherSeeds(conf.getParameter<bool>("excludeOtherSeeds")),
     _minFracTot(conf.getParameter<double>("minFracTot")),
+    _maxSigmaDist2(std::pow(conf.getParameter<double>("maxSigmaDist"),2.0)),
     _layerMap({ {"PS2",(int)PFLayer::PS2},
 	        {"PS1",(int)PFLayer::PS1},
 	        {"ECAL_ENDCAP",(int)PFLayer::ECAL_ENDCAP},
@@ -199,7 +200,7 @@ growPFClusters(const reco::PFCluster& topo,
       const math::XYZVector deltav = clusterpos_xyz - topocellpos_xyz;
       const double d2 = deltav.Mag2()/_showerSigma2;
       dist2.emplace_back( d2 );
-      if( d2 > 100 ) {
+      if( d2 > _maxSigmaDist2 ) {
 	LOGDRESSED("Basic2DGenericPFlowClusterizer:growAndStabilizePFClusters")
 	  << "Warning! :: pfcluster-topocell distance is too large! d= "
 	  << d2;
@@ -235,7 +236,7 @@ growPFClusters(const reco::PFCluster& topo,
       // (about 1% of the clusters) need to be studied, as 
       // they create fake photons, in general.
       // (PJ, 16/09/08) 
-      if( dist2[i] < 100.0 || frac[i] > 0.9999 ) {	
+      if( dist2[i] < _maxSigmaDist2 || frac[i] > 0.9999 ) {	
 	clusters[i].addRecHitFraction(reco::PFRecHitFraction(refhit,frac[i]));
       }
     }

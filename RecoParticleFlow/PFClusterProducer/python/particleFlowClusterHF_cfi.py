@@ -91,6 +91,7 @@ _pfClusterizer_HF = cms.PSet(
     maxIterations = cms.uint32(50),
     excludeOtherSeeds = cms.bool(True),
     minFracTot = cms.double(1e-20), ## numerical stabilization
+    maxSigmaDist = cms.double(10),
     recHitEnergyNorms = cms.VPSet(
     cms.PSet( detector = cms.string("HF_EM"),
               recHitEnergyNorm = cms.double(0.8)

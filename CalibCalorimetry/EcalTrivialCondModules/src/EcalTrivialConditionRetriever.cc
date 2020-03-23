@@ -3170,6 +3170,7 @@ EcalTrivialConditionRetriever::getPFSeedingThresholdsFromConfiguration
   edm::LogInfo ("Going to multiply the sigmas by ")<<pfSeedingThresholdsNSigmas_;
   edm::LogInfo ("We will print some values ");
   
+  std::cout << "Going to print new thresholds for EB" << std::endl;
   
   while (fgets(line,50,inpFile)) {
     float thresh;
