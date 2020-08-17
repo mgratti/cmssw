@@ -72,7 +72,8 @@ void CloseByParticleMultiGunProducer::produce(Event &e, const EventSetup& es)
    // loop over particles
    //
    int barcode = 1 ;
-   int numParticles = fRandomShoot ? CLHEP::RandFlat::shoot(engine, 1, fNParticles) : fNParticles;
+   //int numParticles = fRandomShoot ? CLHEP::RandFlat::shoot(engine, 1, fNParticles) : fNParticles;
+   int numParticles = fNParticles;
    std::vector<int> particles;
 
    for(int i=0; i<numParticles; i++){
@@ -83,18 +84,21 @@ void CloseByParticleMultiGunProducer::produce(Event &e, const EventSetup& es)
    double phi = CLHEP::RandFlat::shoot(engine, fPhiMin, fPhiMax);
    double fR = CLHEP::RandFlat::shoot(engine,fRMin,fRMax);
    double fZ = CLHEP::RandFlat::shoot(engine,fZMin,fZMax); // EE+ or all EB
-   double tmpPhi = phi;
-   double tmpR = fR;
 
    for (unsigned int ip=0; ip<particles.size(); ++ip)
    {
      if(fOverlapping)
        {
-        if(ip!=0) {
-          // now add a randomised deltaZ and deltaPhi variation, interesting for EB only
-          fZ += CLHEP::RandFlat::shoot(engine,0,fDelta);        
-          phi += CLHEP::RandFlat::shoot(engine,0,fDeltaPhi);
-        }
+         if(ip!=0) {
+           // now add a randomised deltaZ and deltaPhi variation, interesting for EB only
+           if(fRandomShoot){
+             fZ += CLHEP::RandFlat::shoot(engine,0,fDelta);        
+             phi += CLHEP::RandFlat::shoot(engine,0,fDeltaPhi);
+           } else {
+             fZ += fDelta;
+             phi += fDeltaPhi;
+           }
+         }
        }
      else{
        phi += 2*TMath::Pi()/(float)numParticles; 

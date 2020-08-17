@@ -22,6 +22,7 @@
 #include "IOMC/ParticleGuns/interface/RandomXiThetaGunProducer.h"
 #include "IOMC/ParticleGuns/interface/CloseByParticleGunProducer.h"
 #include "IOMC/ParticleGuns/interface/CloseByParticleFlatEtGunProducer.h"
+#include "IOMC/ParticleGuns/interface/CloseByParticleMultiGunProducer.h"
 #include "IOMC/ParticleGuns/interface/ManyParticleFlatEtGunProducer.h"
 #include "IOMC/ParticleGuns/interface/RandomXiThetaGunProducer.h"
 #include "IOMC/ParticleGuns/interface/ECALOverlapGunProducer.h"
@@ -72,4 +73,6 @@ using edm::ECALOverlapGunProducer;
 DEFINE_FWK_MODULE(ECALOverlapGunProducer);
 using edm::ManyParticleFlatEtGunProducer;
 DEFINE_FWK_MODULE(ManyParticleFlatEtGunProducer);
+using edm::CloseByParticleMultiGunProducer;
+DEFINE_FWK_MODULE(CloseByParticleMultiGunProducer);
 

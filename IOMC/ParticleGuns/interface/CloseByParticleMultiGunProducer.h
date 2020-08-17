@@ -20,12 +20,14 @@ namespace edm
   protected :
 
     // data members
-    double fPtMax,fPtMin,fRMin,fRMax,fZMin,fZMax,fDelta,fDeltaPhi,fPhiMin,fPhiMax;
+    double fPtMax,fPtMin,fRMin,fRMax,fZMin,fZMax,fPhiMin,fPhiMax;
     int fNParticles;
     bool fdoFlatEnergy = false;
     bool fPointing = false;
     bool fOverlapping = false;
     bool fRandomShoot = false;
+    double fDelta = 2.2; // in cm 
+    double fDeltaPhi = 0.01744; // one crystal in radiants
     std::vector<int> fPartIDs;
   };
 }
