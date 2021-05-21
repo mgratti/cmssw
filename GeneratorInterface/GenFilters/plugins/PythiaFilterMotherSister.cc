@@ -27,7 +27,7 @@ PythiaFilterMotherSister::PythiaFilterMotherSister(const edm::ParameterSet& iCon
       betaBoost(iConfig.getUntrackedParameter("BetaBoost", 0.)),
       maxSisDisplacement(iConfig.getUntrackedParameter("MaxSisterDisplacement", -1.)),
       minTrackPt(iConfig.getUntrackedParameter("MinTrackPt", 0.)),
-      minLeptonPt(iConfig.getUntrackedParameter("MinLeptonPt", 0.)){
+      minLeptonPt(iConfig.getUntrackedParameter("MinLeptonPt", 0.)) {
   //now do what ever initialization is needed
 }
 
@@ -68,20 +68,21 @@ bool PythiaFilterMotherSister::filter(edm::StreamID, edm::Event& iEvent, const e
                ++dau) {
             // find the daugther you're interested in
             if (abs((*dau)->pdg_id()) == abs(sisterID)) {
-              bool passTrackPt = 0;
-              bool passLeptonPt = 0;
+              bool passTrackPt = false;
+              bool passLeptonPt = false;
               // check pt of the nephews
-              for ( HepMC::GenVertex::particle_iterator nephew = (*dau)->end_vertex()->particles_begin(HepMC::children);
-                                                        nephew != (*dau)->end_vertex()->particles_end(HepMC::children);
-                                                        ++nephew ) {
+              for (HepMC::GenVertex::particle_iterator nephew = (*dau)->end_vertex()->particles_begin(HepMC::children);
+                   nephew != (*dau)->end_vertex()->particles_end(HepMC::children);
+                   ++nephew) {
                 int nephew_pdgId = abs((*nephew)->pdg_id());
                 // implicit requirement that only one newphew is a lepton
-                if(nephew_pdgId == 11 or nephew_pdgId == 13 or nephew_pdgId == 15) 
+                if (nephew_pdgId == 11 or nephew_pdgId == 13 or nephew_pdgId == 15)
                   passLeptonPt = ((*nephew)->momentum().perp() > minLeptonPt);
-                if(nephew_pdgId == 211) 
-                  passTrackPt =  ((*nephew)->momentum().perp() > minTrackPt);
+                if (nephew_pdgId == 211)
+                  passTrackPt = ((*nephew)->momentum().perp() > minTrackPt);
               }
-              if(not passLeptonPt or not passTrackPt) return false;
+              if (not passLeptonPt or not passTrackPt)
+                return false;
               // calculate displacement of the sister particle, from production to decay
               HepMC::GenVertex* v1 = (*dau)->production_vertex();
               HepMC::GenVertex* v2 = (*dau)->end_vertex();
